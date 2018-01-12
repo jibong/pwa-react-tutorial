@@ -21,6 +21,22 @@
         window.firebase = firebase;
         firebase.initializeApp(config);
       </script>
+      <script>
+        if ('serviceWorker' in navigator) {
+          // register
+          window.addEventListener('load', function () {
+            navigator.serviceWorker.register('sw.js').then(function(registration) {
+              console.log('Registered');
+            }, function(err) {
+              console.log('ServiceWorker registration failed:', err);
+            }).catch(function(err) {
+              console.log(err);
+            });
+          });
+        } else {
+          console.log('service worker is not supported');
+        }
+      </script>
     <div id="root"></div>
   </body>
 </html>
