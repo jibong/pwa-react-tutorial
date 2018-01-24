@@ -4,6 +4,7 @@ import LoginContainer from './LoginContainer';
 import ChatContainer from './ChatContainer';
 import UserContainer from './UserContainer';
 import './app.css';
+import NotificationResource from '../resources/NotificationResource';
 
 class App extends Component {
   state = { user: null, messages: [], messagesLoaded: false };
@@ -25,10 +26,12 @@ class App extends Component {
 
   componentDidMount() {
     console.log('App Did Mount');
+    this.notifications = new NotificationResource(firebase.messaging(), firebase.database());
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({user});
         console.log(user);
+        this.notifications.changeUser(user);
       } else {
         this.props.history.push('/login');
       }
