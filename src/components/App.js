@@ -37,12 +37,17 @@ class App extends Component {
       }
     });
 
+    this.listenForMessages();
+  }
+
+  listenForMessages = () => {
     firebase
     .database()
     .ref('/messages')
     .on('value', snapshot => {
       this.onMessage(snapshot);
-      console.log(snapshot.val());
+      console.log('snapshot: ' + snapshot.val());  
+
       if (!this.state.messagesLoaded) {
         this.setState({messagesLoaded : true});
       }
@@ -50,15 +55,17 @@ class App extends Component {
   }
 
   onMessage = snapshot => {
-    const messages = Object.keys(snapshot.val()).map(key => {
-      const msg = snapshot.val()[key];
-      msg.id = key;
-      return msg;
-    });
+    if (snapshot.val() != null) {
+      const messages = Object.keys(snapshot.val()).map(key => {
+        const msg = snapshot.val()[key];
+        msg.id = key;
+        return msg;
+      });
 
-    this.setState({ messages });
-
-    console.log(messages);
+      this.setState({ messages });
+      
+      console.log('Messages: ' + messages);
+    }
   }
 
   render() {
