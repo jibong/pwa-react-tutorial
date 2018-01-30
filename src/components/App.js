@@ -22,6 +22,15 @@ class App extends Component {
       .database()
       .ref('messages/')
       .push(data);
+
+    if (this.deferredPrompt) {
+      this.deferredPrompt.prompt();
+      this.deferredPrompt.userChoice.then(choice => {
+        console.log(choice);
+      });
+
+      this.deferredPrompt = null;
+    }
   }
 
   componentDidMount() {
@@ -32,12 +41,12 @@ class App extends Component {
         this.setState({user});
         console.log(user);
         this.notifications.changeUser(user);
+        this.listenForMessages();
+        this.listenForInstallBanner();    
       } else {
         this.props.history.push('/login');
       }
     });
-
-    this.listenForMessages();
   }
 
   listenForMessages = () => {
@@ -52,6 +61,15 @@ class App extends Component {
         this.setState({messagesLoaded : true});
       }
     });
+  }
+
+  listenForInstallBanner = () => {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('beforeinstallprompt Event fired!');
+      e.preventDefault();
+
+      this.deferredPrompt = e;
+    })
   }
 
   onMessage = snapshot => {
