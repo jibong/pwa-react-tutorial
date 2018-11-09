@@ -14,7 +14,7 @@ if (module.hot) {
     const NextApp = require('./components/App').default;
     ReactDOM.render(
       <BrowserRouter>
-        <App/>
+      <App/>
       </BrowserRouter>,
       document.getElementById('root')
     );

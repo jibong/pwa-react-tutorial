@@ -43,7 +43,7 @@ exports.sendNotifications = functions.database
                                         if (error) {
                                             console.error(
                                                 'Failure sending notification to',
-                                                tokes[index],
+                                                tokens[index],
                                                 error
                                             );
 
